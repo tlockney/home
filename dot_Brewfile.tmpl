@@ -1,0 +1,6 @@
+tap "homebrew/bundle"
+tap "homebrew/core"
+{{ if eq .chezmoi.os "linux" -}}
+{{ else if eq .chezmoi.os "darwin" -}}
+tap "homebrew/cask"
+{{ end -}}
