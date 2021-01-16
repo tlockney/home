@@ -15,9 +15,11 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+CURRENT_OS=$(uname -s)
+
 if [[ -f /etc/manpaths ]]; then
     for dir in $(cat /etc/manpaths); do
-        export MANPATH="$MANPATH:$dir"
+	export MANPATH="$MANPATH:$dir"
     done
 fi
 export MANPATH="/usr/local/man:$MANPATH"
@@ -25,8 +27,8 @@ export MANPATH="/usr/local/man:$MANPATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-export EDITOR="code"
-export ALTERNATE_EDITOR=""
+export EDITOR="emacs"
+export ALTERNATE_EDITOR="code"
 export GOPATH="$HOME/Development/gocode"
 export JAVA_OPTIONS="-Djava.awt.headless=true"
 export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
@@ -36,9 +38,7 @@ export NVM_DIR="$HOME/.nvm"
 alias mkdir="mkdir -p"
 
 alias pip-up="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
-alias fishconf="code ~/.config/fish/config.fish"
 alias git-scrub="git branch --merged | grep -v master | xargs git branch -d"
-alias stk="send-to-kindle"
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -50,16 +50,15 @@ if [[ -d $HOME/.pyenv ]]; then
     eval "$(pyenv init -)"
 
     if [[ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]]; then
-        eval "$(pyenv virtualenv-init -)"
+	eval "$(pyenv virtualenv-init -)"
     fi
 fi
 
 # init pipx
 # eval "$(register-python-argcomplete pipx)"
 
-if [[ -x /usr/local/bin/brew ]]; then
-    export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-    alias brew-up="brew update && brew upgrade"
-    alias cask="brew cask"
+if [[ $CURRENT_OS = "Darwin" ]]; then
+   export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 fi
-
+alias brew-up="brew update && brew upgrade"
+alias cask="brew cask"
