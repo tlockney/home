@@ -36,6 +36,7 @@ export ANDROID_NDK_ROOT="/usr/local/share/android-ndk"
 export NVM_DIR="$HOME/.nvm"
 
 alias mkdir="mkdir -p"
+alias cm=chezmoi
 
 alias pip-up="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
 alias git-scrub="git branch --merged | grep -v master | xargs git branch -d"
