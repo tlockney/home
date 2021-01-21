@@ -5,7 +5,7 @@ autoload -U compinit && compinit
 
 export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
-PROMPT='%B%F{226}%~%f -> %b'
+PS1='%B%F{226}%~%f -> %b'
 
 CURRENT_OS=$(uname -s)
 

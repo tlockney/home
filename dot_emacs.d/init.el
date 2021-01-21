@@ -37,15 +37,17 @@
 (add-to-list 'desktop-modes-not-to-save 'fundamental-mode)
 
 ;; Remove toolbar, scrollbar, and menubar
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
-(tooltip-mode -1)
-
-(unless window-system
-  (require 'mouse)
-  (xterm-mouse-mode t)
-  (mouse-wheel-mode t))
+(if (display-graphic-p)
+    (progn
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)
+      (menu-bar-mode -1)
+      (tooltip-mode -1))
+  (progn
+    (require 'mouse)
+    (xterm-mouse-mode t)
+    (when (require 'mwheel nil 'noerror)(mouse-wheel-mode t))
+  )
 
 ;; Maximize emacs on startup and removes title bar (borderless fullscreen)
 (set-frame-parameter nil 'fullscreen 'fullboth)
