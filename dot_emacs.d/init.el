@@ -47,7 +47,7 @@
     (require 'mouse)
     (xterm-mouse-mode t)
     (when (require 'mwheel nil 'noerror)(mouse-wheel-mode t))
-  )
+  ))
 
 ;; Maximize emacs on startup and removes title bar (borderless fullscreen)
 (set-frame-parameter nil 'fullscreen 'fullboth)
@@ -102,3 +102,5 @@
 
 (use-package writeroom-mode
   :ensure t)
+
+
