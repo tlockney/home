@@ -103,4 +103,5 @@
 (use-package writeroom-mode
   :ensure t)
 
-
+(use-package vterm
+  :ensure t)
