@@ -50,7 +50,7 @@
   ))
 
 ;; Maximize emacs on startup and removes title bar (borderless fullscreen)
-(set-frame-parameter nil 'fullscreen 'fullboth)
+;(set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; Highlight Current Line
 (add-hook 'after-init-hook 'global-hl-line-mode)
