@@ -1,0 +1,58 @@
+#!/usr/bin/env sh
+
+BASE_PACKAGES=$(cat <<EOF
+    ansible
+    bash
+    cmake
+    coreutils
+    curl
+    emacs
+    gcc
+    gh
+    git
+    gnupg
+    gzip
+    htop
+    hugo
+    jq
+    mosh
+    nvm
+    pandoc
+    pipenv
+    pipx
+    pyenv
+    tmux
+    tree
+    unzip
+    wget
+    zsh
+    zsh-completions
+EOF
+)
+
+CASK_PACKAGES=$(cat <<EOF
+    1password 
+    1password-cli
+    alfred
+    docker
+    emacs
+    font-fira-code
+    google-chrome
+    hazel
+    istat-menus
+    iterm2
+    moom
+EOF
+)
+
+brew tap homebrew/core
+brew tap homebrew/cask-fonts
+brew tap homebrew/services
+{{ if eq .chezmoi.os "linux" -}}
+{{ else if eq .chezmoi.os "darwin" -}}
+brew tap homebrew/cask
+brew tap homebrew/cask-versions
+{{ end -}}
+
+brew install $BASE_PACKAGES || true
+brew install --cask $CASK_PACKAGES || true
