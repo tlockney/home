@@ -2,6 +2,13 @@
 
 PIPX=$(which pipx)
 
+PACKAGES=$(cat <<EOF
+    ipython
+    ptpython
+    pygments
+EOF
+)
+
 if [[ -x "$PIPX" ]]; then
     $PIPX install ipython
 else
