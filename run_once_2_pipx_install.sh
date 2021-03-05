@@ -10,7 +10,7 @@ EOF
 )
 
 if [[ -x "$PIPX" ]]; then
-    $PIPX install ipython
+    $PIPX install ipython || true
 else
     echo "ERROR: pipx not found!"
 fi
