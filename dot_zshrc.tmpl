@@ -29,9 +29,11 @@ export NVM_DIR="$HOME/.nvm"
 
 alias mkdir="mkdir -p"
 alias cm=chezmoi
-
+alias cm-up="chezmoi git pull && chezmoi apply -v"
 alias pip-up="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
 alias git-scrub="git branch --merged | grep -v master | xargs git branch -d"
+alias brew-up="brew update && brew upgrade"
+alias cask="brew cask"
 
 export NVM_DIR="$HOME/.nvm"
 {{ if eq .chezmoi.os "linux" -}}
@@ -59,5 +61,3 @@ fi
 if [[ $CURRENT_OS = "Darwin" ]]; then
    export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 fi
-alias brew-up="brew update && brew upgrade"
-alias cask="brew cask"
