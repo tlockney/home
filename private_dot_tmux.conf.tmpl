@@ -5,7 +5,11 @@ bind "`" send-prefix
 
 # listen to alerts from all windows
 set -g bell-action any
+{{ if eq .chezmoi.os "linux" -}}
 set -g default-shell /usr/bin/zsh
+{{ else if eq .chezmoi.os "darwin" -}}
+set -g default-shell /usr/local/bin/zsh
+{{ end -}}
 set -g default-command zsh
 
 # start window indexing at 1 (not 0)
