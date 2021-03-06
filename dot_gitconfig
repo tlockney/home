@@ -6,5 +6,6 @@
 
 [core]
   editor = emacs -nw
+  
 [pull]
 	rebase = false
