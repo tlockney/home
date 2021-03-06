@@ -2,15 +2,10 @@
 
 PIPX=$(which pipx)
 
-PACKAGES=$(cat <<EOF
-    ipython
-    ptpython
-    pygments
-EOF
-)
-
 if [[ -x "$PIPX" ]]; then
     $PIPX install ipython || true
+    $PIPX install ptpython || true
+    $PIPX install pygments || true
 else
     echo "ERROR: pipx not found!"
 fi
