@@ -3,7 +3,8 @@
 PIPX=$(which pipx)
 
 if [[ -x "$PIPX" ]]; then
-    $PIPX install --force ipython || true
+    $PIPX install --force jupyterlab || true
+    $PIPX inject jupyterlab requests pandas numpy
     $PIPX install --force ptpython || true
     $PIPX install --force pygments || true
     $PIPX install --force httpie || true
