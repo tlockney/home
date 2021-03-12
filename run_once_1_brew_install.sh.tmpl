@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+{{ if not (eq .chezmoi.arch "amd64") -}}
+    echo "This script only works on Intel processors!"
+    exit 0
+{{ end -}}
+
 BASE_PACKAGES=$(cat <<EOF
     ansible
     awscli
