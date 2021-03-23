@@ -8,7 +8,8 @@
 (transient-mark-mode t)
 (column-number-mode t)
 
-(setq major-mode 'text-mode
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"
+      major-mode 'text-mode
       inhibit-splash-screen t
       inhibit-startup-message t
       inhibit-startup-screen t
