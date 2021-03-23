@@ -1,2 +1,4 @@
 README.md
 code_user_settings.json
+amd64_install.sh
+non_amd64_install.sh
