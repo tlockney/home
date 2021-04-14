@@ -58,6 +58,16 @@ fi
 # init pipx
 # eval "$(register-python-argcomplete pipx)"
 
+{{ if eq .chezmoi.os "darwin" -}}
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+{{ end -}}
+
+# set up Java paths
 if [[ $CURRENT_OS = "Darwin" ]]; then
-   export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+    export JAVA_HOME=$(/usr/libexec/java_home)
+elif [[ $CURRENT_OS = "Linux" ]]; then
+    export JAVA_HOME=/usr/lib/jvm/default-java
 fi
+
+export PATH=$JAVA_HOME/bin:$PATH
+
