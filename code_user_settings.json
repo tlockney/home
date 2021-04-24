@@ -1,7 +1,7 @@
 // Place your settings in this file to overwrite the default settings
 {
     "editor.fontFamily": "'FiraCode-Retina', 'Fira Code Medium', 'Ubuntu Mono', 'Input Mono', Menlo, Monaco, 'Courier New', monospace",
-    "editor.fontSize": 14,
+    "editor.fontSize": 16,
     "editor.tabSize": 2,
     "editor.insertSpaces": false,
     "editor.fontLigatures": true,
@@ -62,5 +62,9 @@
     "python.insidersChannel": "weekly",
     "python.languageServer": "Pylance",
     "sync.gist": "08d475c869608daa729ff5f7ad799e76",
-    "workbench.colorTheme": "Witch Hazel Hypercolor"
+    "workbench.colorTheme": "Witch Hazel Hypercolor",
+    "vsicons.dontShowNewVersionMessage": true,
+    "debug.console.fontSize": 18,
+    "markdown.preview.fontSize": 18,
+    "terminal.integrated.fontSize": 18
 }
