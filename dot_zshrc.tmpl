@@ -21,7 +21,6 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export EDITOR="emacs"
 export ALTERNATE_EDITOR="code"
-export GOPATH="$HOME/Development/gocode"
 export JAVA_OPTIONS="-Djava.awt.headless=true"
 export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
 export ANDROID_NDK_ROOT="/usr/local/share/android-ndk"
@@ -71,3 +70,7 @@ fi
 
 export PATH=$JAVA_HOME/bin:$PATH
 
+if [[ -d /usr/local/go ]]; then
+    export GOPATH="$HOME/gocode"
+    export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+fi
