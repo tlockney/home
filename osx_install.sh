@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-
-{{ if (eq .chezmoi.arch "amd64") -}}
 BASE_PACKAGES=$(cat <<EOF
     ansible
     awscli
@@ -58,28 +55,8 @@ fi
 brew tap homebrew/core
 brew tap homebrew/cask-fonts
 brew tap homebrew/services
-{{ if eq .chezmoi.os "linux" -}}
-{{ else if eq .chezmoi.os "darwin" -}}
 brew tap homebrew/cask
 brew tap homebrew/cask-versions
-{{ end -}}
 
 brew install $BASE_PACKAGES || true
 brew install --cask $CASK_PACKAGES || true
-
-{{ end -}}
-
-{{ if not (eq .chezmoi.arch "amd64") -}}
-sudo apt update
-sudo apt install -y build-essential curl emacs mosh tmux zsh
-
-# Install pipx
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
-
-# Install pyenv
-if [ ! -d $HOME/.pyenv ]; then
-    curl https://pyenv.run | bash
-fi
-
-{{ end -}}

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+{{ if eq .chezmoi.os "linux" -}}
+{{   include "linux_install.sh" -}}
+{{ end -}}
+
+{{ if eq .chezmoi.os "darwin" -}}
+{{   include "osx_install.sh" -}}
+{{ end }}
