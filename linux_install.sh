@@ -22,6 +22,11 @@ sudo apt install -y code
 # Install Emacs
 sudo apt install -y emacs27
 
+# Install Google Chrome
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb 
+rm google-chrome-stable_current_amd64.deb
+
 # Install pipx
 python3 -m pip install --user pipx
 python3 -m pipx ensurepath
