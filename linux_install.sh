@@ -11,18 +11,30 @@ sudo add-apt-repository -y ppa:kelleyk/emacs
 
 # Update repos
 sudo apt update
+sudo apt full-upgrade -y
 
 # Install essential packages
-sudo apt install -y software-properties-common apt-transport-https python3-pip
-sudo apt install -y ssh build-essential curl mosh tmux zsh openjdk-11-jdk htop
+sudo apt install -y \
+    software-properties-common \
+    apt-transport-https \
+    python3-pip \
+    ssh \
+    build-essential \
+    curl \
+    mosh \
+    tmux \
+    zsh \
+    openjdk-11-jdk \
+    htop \
+    tree
 
 # Install Visual Studio Code
 sudo apt install -y code
 
-# Install Emacs
+# Install Emacs 27  
 sudo apt install -y emacs27
 
-# Install Google Chrome
+# Install latest Google Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb 
 rm google-chrome-stable_current_amd64.deb
@@ -34,4 +46,8 @@ python3 -m pipx ensurepath
 # Install pyenv
 if [ ! -d $HOME/.pyenv ]; then
     curl https://pyenv.run | bash
-fi
+fi 
+
+# Remove some unnecessary packages
+sudo apt remove -y chromium-browser
+sudo apt autoremove
