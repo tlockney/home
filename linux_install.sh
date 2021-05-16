@@ -1,8 +1,22 @@
 # util functions
 
+function startsudo() {
+    sudo -v
+    ( while true; do sudo -v; sleep 50; done; ) &
+    SUDO_PID="$!"
+    trap stopsudo SIGINT SIGTERM
+}
+function stopsudo() {
+    kill "$SUDO_PID"
+    trap - SIGINT SIGTERM
+    sudo -k
+}
+
 function get_download_url {
     wget -q -nv -O- https://api.github.com/repos/$1/$2/releases/latest 2>/dev/null |  jq -r '.assets[] | select(.browser_download_url | contains("linux64")) | .browser_download_url'
 }
+
+startsudo
 
 # Versions (where needed)
 GO_VERSION=1.16.4
@@ -89,3 +103,5 @@ popd
 # Remove some unnecessary packages
 sudo apt remove -y chromium-browser
 sudo apt autoremove
+
+stopsudo
