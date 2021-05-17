@@ -1,3 +1,8 @@
+#
+# Install stuff on Linux
+# 
+# TODO: move ALL of this to Ansible!!
+
 # util functions
 
 function startsudo() {
@@ -32,9 +37,21 @@ rm packages.microsoft.gpg
 ## emacs PPA
 sudo add-apt-repository -y ppa:kelleyk/emacs
 
-# b
+# bookworm
 sudo add-apt-repository -y ppa:philip.scott/spice-up-daily
 sudo add-apt-repository -y ppa:bookworm-team/bookworm
+
+# 1password
+ curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+ echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 beta main' | sudo tee /etc/apt/sources.list.d/1password.list
+ sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+ curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+ sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+ curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+
+ # Dropbox
+ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
+ echo 'deb [arch=i386,amd64] http://linux.dropbox.com/ubuntu disco main' | sudo tee /etc/apt/sources.list.d/dropbox.list
 
 # Update repos
 sudo apt update
@@ -42,13 +59,30 @@ sudo apt update
 # Upgrade anything that's ready to be upgraded
 sudo apt full-upgrade -y
 
+# Install essential development packages
+sudo apt install \
+    build-essential \
+    python3-dev \
+    python3-setuptools \
+    python3-pip \
+    python3-smbus \
+    libncursesw5-dev \
+    libgdbm-dev \
+    libc6-dev \
+    zlib1g-dev \
+    libsqlite3-dev \
+    tk-dev \
+    libssl-dev \
+    openssl \
+    libffi-dev \
+    libreadline-gplv2-dev \
+    libbz2-dev
+
 # Install essential packages
 sudo apt install -y \
     software-properties-common \
     apt-transport-https \
-    python3-pip \
     ssh \
-    build-essential \
     curl \
     mosh \
     tmux \
@@ -56,17 +90,10 @@ sudo apt install -y \
     openjdk-11-jdk \
     htop \
     tree \
-    libreadline-gplv2-dev \
-    libncursesw5-dev \
-    libssl-dev \
-    libsqlite3-dev \
-    tk-dev \
-    libgdbm-dev \
-    libc6-dev \
-    libbz2-dev \
     jq \
     libgranite5 \
-    bookworm
+    bookworm \
+    1password
 
 # Install Visual Studio Code
 sudo apt install -y code
@@ -107,6 +134,21 @@ sudo rm $PROCESSING_FILE
 sudo ln -sf $PROCESSING_DIR processing
 popd
 /opt/Processing/processing/install.sh 
+
+# Install Signal
+wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+
+echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+  sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+
+sudo apt update && sudo apt install signal-desktop
+
+# Install Slack
+SLACK_PACKAGE=slack-desktop-4.15.0-amd64.deb
+wget https://downloads.slack-edge.com/linux_releases/$SLACK_PACKAGE
+sudo dpkg -i slack-desktop-4.15.0-amd64.deb
+rm slack-desktop-4.15.0-amd64.deb
 
 # Remove some unnecessary packages
 sudo apt remove -y chromium-browser
