@@ -32,8 +32,14 @@ rm packages.microsoft.gpg
 ## emacs PPA
 sudo add-apt-repository -y ppa:kelleyk/emacs
 
+# b
+sudo add-apt-repository -y ppa:philip.scott/spice-up-daily
+sudo add-apt-repository -y ppa:bookworm-team/bookworm
+
 # Update repos
 sudo apt update
+
+# Upgrade anything that's ready to be upgraded
 sudo apt full-upgrade -y
 
 # Install essential packages
@@ -58,7 +64,9 @@ sudo apt install -y \
     libgdbm-dev \
     libc6-dev \
     libbz2-dev \
-    jq
+    jq \
+    libgranite5 \
+    bookworm
 
 # Install Visual Studio Code
 sudo apt install -y code
