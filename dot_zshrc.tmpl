@@ -3,6 +3,8 @@
 plugins=(zsh-completions)
 autoload -U compinit && compinit
 
+set -o emacs
+
 export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
 PS1='%B%F{yellow1}%~@%m%f -> %b'
