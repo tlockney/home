@@ -146,9 +146,26 @@ sudo apt update && sudo apt install signal-desktop
 
 # Install Slack
 SLACK_PACKAGE=slack-desktop-4.15.0-amd64.deb
-wget https://downloads.slack-edge.com/linux_releases/$SLACK_PACKAGE
-sudo dpkg -i slack-desktop-4.15.0-amd64.deb
+wget -O $SLACK_PACKAGE https://downloads.slack-edge.com/linux_releases/$SLACK_PACKAGE
+sudo dpkg -i $SLACK_PACKAGE
 rm slack-desktop-4.15.0-amd64.deb
+
+# Install Dropbox
+DROPBOX_PACKAGE=dropbox_2020.03.04_amd64.deb
+wget -O $DROPBOX_PACKAGE https://www.dropbox.com/download\?dl=packages/ubuntu/$DROPBOX_PACKAGE
+sudo dpkg -i $DROPBOX_PACKAGE
+rm $DROPBOX_PACKAGE
+
+# Install Cascadia Code font
+CASCADIA_CODE_PACKAGE=CascadiaCode-2102.25.zip
+wget -O $CASCADIA_CODE_PACKAGE https://github.com/microsoft/cascadia-code/releases/download/v2102.25/$CASCADIA_CODE_PACKAGE
+mkdir fonts; pushd fonts
+unzip ../$CASCADIA_CODE_PACKAGE
+sudo mkdir /usr/share/fonts/truetype/cascadia
+sudo cp ttf/*.ttf /usr/share/fonts/truetype/cascadia
+popd
+rm -rf fonts
+rm -rf $CASCADIA_CODE_PACKAGE
 
 # Remove some unnecessary packages
 sudo apt remove -y chromium-browser
