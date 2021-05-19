@@ -1,3 +1,7 @@
+function prepend_to_path {
+    echo "$PATH" | grep -q $1 || export PATH=$1:$PATH
+}
+
 [[ -f "/usr/libexec/path_helpers" ]] && eval "$(/usr/libexec/path_helper)"
 
 plugins=(zsh-completions)
@@ -5,7 +9,8 @@ autoload -U compinit && compinit
 
 set -o emacs
 
-export PATH=$HOME/bin:$HOME/.local/bin:$PATH
+prepend_to_path $HOME/bin
+prepend_to_path $HOME/.local/bin
 
 PS1='%B%F{yellow1}%~@%m%f -> %b'
 
@@ -72,5 +77,12 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 if [[ -d /usr/local/go ]]; then
     export GOPATH="$HOME/gocode"
-    export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+    prepend_to_path /usr/local/go/bin
+    prepend_to_path $GOPATH/bin
 fi
+
+# Check for processing
+if [[ -d /opt/Processing/processing/ ]]; then
+    prepend_to_path /opt/Processing/processing/processing
+fi 
+
