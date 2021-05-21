@@ -29,17 +29,15 @@ GO_VERSION=1.16.4
 # Add necessary repositories
 
 ## vscode
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-rm packages.microsoft.gpg
+if [[ ! -f /etc/apt/sources.list.d/vscode.list ]]; then
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+    sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+    rm packages.microsoft.gpg
+fi
 
 ## emacs PPA
 sudo add-apt-repository -y ppa:kelleyk/emacs
-
-# bookworm
-sudo add-apt-repository -y ppa:philip.scott/spice-up-daily
-sudo add-apt-repository -y ppa:bookworm-team/bookworm
 
 # 1password
  curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
@@ -92,7 +90,6 @@ sudo apt install -y \
     tree \
     jq \
     libgranite5 \
-    bookworm \
     1password
 
 # Install Visual Studio Code
@@ -136,19 +133,21 @@ popd
 /opt/Processing/processing/install.sh 
 
 # Install Signal
-wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
-cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+if [[ ! -f /etc/apt/sources.list.d/signal-xenial.list ]]; then
+    wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+    cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
 
-echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
-  sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+    sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
 
-sudo apt update && sudo apt install signal-desktop
+    sudo apt update && sudo apt install signal-desktop
+fi
 
 # Install Slack
 SLACK_PACKAGE=slack-desktop-4.15.0-amd64.deb
 wget -O $SLACK_PACKAGE https://downloads.slack-edge.com/linux_releases/$SLACK_PACKAGE
 sudo dpkg -i $SLACK_PACKAGE
-rm slack-desktop-4.15.0-amd64.deb
+rm $SLACK_PACKAGE
 
 # Install Dropbox
 DROPBOX_PACKAGE=dropbox_2020.03.04_amd64.deb
@@ -161,11 +160,20 @@ CASCADIA_CODE_PACKAGE=CascadiaCode-2102.25.zip
 wget -O $CASCADIA_CODE_PACKAGE https://github.com/microsoft/cascadia-code/releases/download/v2102.25/$CASCADIA_CODE_PACKAGE
 mkdir fonts; pushd fonts
 unzip ../$CASCADIA_CODE_PACKAGE
-sudo mkdir /usr/share/fonts/truetype/cascadia
+sudo mkdir -p /usr/share/fonts/truetype/cascadia
 sudo cp ttf/*.ttf /usr/share/fonts/truetype/cascadia
 popd
 rm -rf fonts
 rm -rf $CASCADIA_CODE_PACKAGE
+
+# Install Tailscale
+if [[ ! -f /etc/apt/sources.list.d/tailscale.list ]]; then
+    curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/bionic.gpg | sudo apt-key add -
+    curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/bionic.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+    sudo apt-get update
+    sudo apt-get install tailscale
+    sudo tailscale up
+fi
 
 # Remove some unnecessary packages
 sudo apt remove -y chromium-browser
