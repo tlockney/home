@@ -120,8 +120,7 @@ sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.16.4.linux-amd64.ta
 rm $GO_FILE
 
 # Install Processing
-sudo mkdir -p /opt/Processing
-pushd /opt/Processing
+pushd /opt/
 PROCESSING_DL=$(get_download_url processing processing)
 PROCESSING_FILE=$(echo $PROCESSING_DL | cut -d'/' -f9)
 sudo wget $PROCESSING_DL
@@ -130,7 +129,7 @@ sudo tar xzvf $PROCESSING_FILE
 sudo rm $PROCESSING_FILE
 sudo ln -sf $PROCESSING_DIR processing
 popd
-/opt/Processing/processing/install.sh 
+/opt/processing/install.sh 
 
 # Install Signal
 if [[ ! -f /etc/apt/sources.list.d/signal-xenial.list ]]; then
@@ -173,6 +172,16 @@ if [[ ! -f /etc/apt/sources.list.d/tailscale.list ]]; then
     sudo apt-get update
     sudo apt-get install tailscale
     sudo tailscale up
+fi
+
+# Install Maven
+MAVEN_VERSION=3.8.1
+if [[ ! -d /opt/apache-maven-$MAVEN_VERSION ]]; then
+    MAVEN_FILE=apache-maven-$MAVEN_VERSION-bin.tar.gz
+    wget https://www-us.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/$MAVEN_FILE -P /tmp
+    sudo tar xf /tmp/$MAVEN_FILE -C /opt
+    sudo ln -s /opt/apache-maven-$MAVEN_VERSION /opt/maven
+    rm /tmp/$MAVEN_FILE
 fi
 
 # Remove some unnecessary packages
