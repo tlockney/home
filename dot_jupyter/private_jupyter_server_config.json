@@ -4,6 +4,6 @@
     "open_browser": "False"
   },
   "ServerApp": {
-    "password": "sha1:a24ed18fb6e9:4d90dd33ed80554883e7442f4cfef5a8c45d1763"
+    "password": "argon2:$argon2id$v=19$m=10240,t=10,p=8$GpKLxUylIEeHKivX18qG4Q$HhKQwGW3DFnBj7pYhYTCNw"
   }
 }
