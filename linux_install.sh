@@ -91,7 +91,8 @@ sudo apt install \
     openssl \
     libffi-dev \
     libreadline-gplv2-dev \
-    libbz2-dev
+    libbz2-dev \
+    liblzma-dev
 
 # Install essential packages
 sudo apt install -y \
