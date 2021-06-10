@@ -92,7 +92,8 @@ sudo apt install \
     libffi-dev \
     libreadline-gplv2-dev \
     libbz2-dev \
-    liblzma-dev
+    liblzma-dev \
+    libelf-dev
 
 # Install essential packages
 sudo apt install -y \
@@ -110,7 +111,9 @@ sudo apt install -y \
     libgranite5 \
     1password \
     signal-desktop \
-    tailscale
+    tailscale \ 
+    android-tools-adb \
+    lzip
 
 # Install Visual Studio Code
 sudo apt install -y code
