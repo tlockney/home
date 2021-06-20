@@ -1,9 +1,33 @@
+function prepend_to_path {
+    echo "$PATH" | grep -q $1 || export PATH=$1:$PATH
+}
+
 [[ -f "/usr/libexec/path_helpers" ]] && eval "$(/usr/libexec/path_helper)"
 
 plugins=(zsh-completions)
 autoload -U compinit && compinit
 
-export PATH=$HOME/bin:$HOME/.local/bin:$PATH
+set -o emacs
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+
+prepend_to_path $HOME/bin
+prepend_to_path $HOME/.local/bin
 
 PS1='%B%F{yellow1}%~@%m%f -> %b'
 
@@ -34,20 +58,16 @@ alias git-scrub="git branch --merged | grep -v master | xargs git branch -d"
 alias brew-up="brew update && brew upgrade"
 alias cask="brew cask"
 
+# init nvm
 export NVM_DIR="$HOME/.nvm"
-{{ if eq .chezmoi.os "linux" -}}
-NVM_BASE="/home/linuxbrew/.linuxbrew/opt/nvm"
-{{ else -}}
-NVM_BASE="/usr/local/opt/nvm"
-{{ end -}}
-[ -s "$NVM_BASE/nvm.sh" ] && . "$NVM_BASE/nvm.sh"  # This loads nvm
-[ -s "$NVM_BASE/etc/bash_completion.d/nvm" ] && . "$NVM_BASE/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # init pyenv
 if [[ -d $HOME/.pyenv ]]; then
     eval "$(pyenv init -)"
     if [[ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]]; then
-	eval "$(pyenv virtualenv-init -)"
+	    eval "$(pyenv virtualenv-init -)"
     fi
 fi
 
@@ -62,12 +82,26 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 if [[ $CURRENT_OS = "Darwin" ]]; then
     export JAVA_HOME=$(/usr/libexec/java_home)
 elif [[ $CURRENT_OS = "Linux" ]]; then
-    export JAVA_HOME=/usr/lib/jvm/default-java
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 fi
 
 export PATH=$JAVA_HOME/bin:$PATH
 
+# set up Maven path
+if [[ -d /opt/maven ]]; then
+    export M2_HOME=/opt/maven
+    export MAVEN_HOME=/opt/maven
+    prepend_to_path $MAVEN_HOME/bin
+fi
+
 if [[ -d /usr/local/go ]]; then
     export GOPATH="$HOME/gocode"
-    export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+    prepend_to_path /usr/local/go/bin
+    prepend_to_path $GOPATH/bin
 fi
+
+# Check for processing
+if [[ -d /opt/processing/ ]]; then
+    prepend_to_path /opt/processing/
+fi 
+
